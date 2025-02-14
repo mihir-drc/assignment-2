@@ -1,0 +1,171 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                   Int           @id @default(autoincrement())
+  email                String        @unique
+  password             String
+  fullName             String?
+  createdAt            DateTime      @default(now())
+  is_active            Int           @default(2)
+  profile              String?       @default("https://github.com/shadcn.png")
+  currency             String        @default("USD")
+  bankAccounts         BankAccount[]
+  budget               Budget[]
+  transactions         Transaction[] @relation(name: "transactions")
+  receivedTransactions Transaction[] @relation(name: "ReceivedTransactions")
+
+  investmentAccounts InvestmentAccount[]
+  families           FamilyMember[]
+  approvals          ExpenseApproval[]
+}
+
+model BankAccount {
+  id                   Int             @id @default(autoincrement())
+  userId               Int
+  user                 User            @relation(fields: [userId], references: [id])
+  bankName             String
+  accountNumber        String          @unique
+  ifsccode             String?
+  balance              Decimal
+  currency             String
+  createdAt            DateTime        @default(now())
+  accountType          BankAccountType
+  transactions         Transaction[]   @relation(name: "Account") // Existing relation
+  receivedTransactions Transaction[]   @relation(name: "ReceiverAccount") // New relation
+}
+
+model InvestmentAccount {
+  id            Int      @id @default(autoincrement())
+  userId        Int
+  user          User     @relation(fields: [userId], references: [id])
+  platform      String // Example: AngelOne, Zerodha
+  accountNumber String   @unique
+  createdAt     DateTime @default(now())
+
+  investments            Investment[]
+  investmentTransactions InvestmentTransaction[]
+}
+
+model Investment {
+  id                  Int               @id @default(autoincrement())
+  investmentAccountId Int
+  investmentAccount   InvestmentAccount @relation(fields: [investmentAccountId], references: [id])
+  assetType           AssetType
+  assetName           String // Example: Tesla, Bitcoin, SBI Mutual Fund
+  quantity            Decimal
+  purchasePrice       Decimal
+  currentPrice        Decimal
+  currency            String
+  purchaseDate        DateTime
+  dividendsReceived   Decimal? // Optional - for stocks that pay dividends
+}
+
+model InvestmentTransaction {
+  id                  Int                       @id @default(autoincrement())
+  investmentAccountId Int
+  investmentAccount   InvestmentAccount         @relation(fields: [investmentAccountId], references: [id])
+  transactionType     InvestmentTransactionType // ENUM (BUY, SELL)
+  assetName           String
+  quantity            Decimal
+  pricePerUnit        Decimal
+  totalAmount         Decimal
+  currency            String
+  transactionDate     DateTime                  @default(now())
+}
+
+model Transaction {
+  id              Int             @id @default(autoincrement())
+  bankAccountId   Int?
+  bankAccount     BankAccount?    @relation(name: "Account", fields: [bankAccountId], references: [id], map: "FK_Account")
+  amount          Decimal
+  currency        String
+  transactionType TransactionType // ENUM (DEPOSIT, WITHDRAW, TRANSFER)
+  timePeriod      String?
+  categoryId      Int?
+  category        Category?       @relation(fields: [categoryId], references: [id])
+  description     String?
+  transactionDate DateTime        @default(now())
+  userId          Int
+  user            User            @relation(name: "transactions", fields: [userId], references: [id], map: "FK_Transaction_User")
+
+  recieverId        Int?
+  reciever          User?             @relation(name: "ReceivedTransactions", fields: [recieverId], references: [id], map: "FK_Transaction_Receiver")
+  recieverAccountId Int?
+  recieverAccount   BankAccount?      @relation(name: "ReceiverAccount", fields: [recieverAccountId], references: [id], map: "FK_Receiver_Account")
+  approvals         ExpenseApproval[]
+}
+
+model Budget {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  user       User     @relation(fields: [userId], references: [id])
+  categoryId Int
+  category   Category @relation(fields: [categoryId], references: [id])
+  amount     Decimal
+  currency   String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Category {
+  id           Int           @id @default(autoincrement())
+  name         String        @unique
+  budgets      Budget[]
+  transactions Transaction[]
+}
+
+model FamilyMember {
+  id       Int    @id @default(autoincrement())
+  userId   Int
+  user     User   @relation(fields: [userId], references: [id])
+  name     String
+  relation String // Example: Father, Mother, Brother
+}
+
+model ExpenseApproval {
+  id            Int            @id @default(autoincrement())
+  userId        Int
+  user          User           @relation(fields: [userId], references: [id])
+  transactionId Int
+  transaction   Transaction    @relation(fields: [transactionId], references: [id])
+  status        ApprovalStatus // ENUM (PENDING, APPROVED, REJECTED)
+  requestedBy   String // The person who requested approval
+  approvedBy    String? // The person who approved/rejected
+  createdAt     DateTime       @default(now())
+}
+
+enum BankAccountType {
+  SAVING
+  CURRENT
+}
+
+enum AssetType {
+  STOCK
+  CRYPTO
+  MUTUAL_FUND
+  BOND
+}
+
+enum TransactionType {
+  DEPOSIT
+  WITHDRAW
+  TRANSFER
+}
+
+enum InvestmentTransactionType {
+  BUY
+  SELL
+}
+
+enum ApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}

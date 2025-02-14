@@ -1,0 +1,130 @@
+export interface BankAccountInterface {
+  id: number;
+  userId: number;
+  accountNumber: string;
+  accountType: "SAVING" | "CURRENT"; // Assuming only these two types
+  balance: string; // If balance is stored as a number, change to `balance: number;`
+  currency: string; // Example: "INR", "USD"
+  bankName: string;
+  ifsccode: string;
+  createdAt: string; // If handling dates properly, use `Date`
+}
+export interface RecieverBankAccountInterface {
+  id: number;
+  accountNumber: string;
+  bankName: string;
+}
+export interface RecieverInterface {
+  id: number;
+  fullName: string;
+  profile: string;
+}
+export interface TranslationsInterface {
+  ADDACCOUNT: string;
+  ACCOUNTNUMBER: string;
+  BALANCE: string;
+  CHECKMAIL: string;
+  CLICKLINK: string;
+  CONTACTSUPPORT: string;
+  CONTACTUS: string;
+  CURRENCY: string;
+  CREATENEWACCOUNT: string;
+  DONTHAVEACCOUNT: string;
+  EMAIL: string;
+  EMAILVERIFIED: string;
+  ENTERYOURDETAILSTOREGISTER: string;
+  ENTERYOURDETAILSTOLOGIN: string;
+  EXCHANGERATE: string;
+  FORGOTPASSWORD: string;
+  FORSECURITY: string;
+  FOOTERPRODUCT: string;
+  FULLNAME: string;
+  FINANCEAPP: string;
+  FUTURELOGINUSE: string;
+  GETHELP: string;
+  LOGIN: string;
+  LOGINTOYOURACCOUNT: string;
+  NEEDSUPPORT: string;
+  NOTGETTINGMAIL: string;
+  PASSWORD: string;
+  REGISTER: string;
+  REGISTERFOOTER: string;
+  REMEMBERME: string;
+  SENDAGAIN: string;
+  SIGNIN: string;
+  SIGNUP: string;
+  SIGNINGUP: string;
+  SELECTTYPE: string;
+  TERMSCONDITION: string;
+  YOUREMAILADDRESS: string;
+  TOKENEXPIRED: string;
+  TOKENEXPIREDDESCRIPTION: string;
+  CONTINUE: string;
+  YOUR: string;
+  YOURFINANCIALDASHBOARD: string;
+  SEND: string;
+  SENDING: string;
+  PASSWORDFORGOT: string;
+  PASSWORDFORGOTDESCRIPTION: string;
+  WELCOMEBACK: string;
+  DASHBOARD: string;
+  CARDS: string;
+  TRANSACTIONS: string;
+  TRANSACTIONSDESCRIPTION: string;
+  RECIEPTENTS: string;
+  RECIEPTENTSDESCRIPTION: string;
+  INTEGRATIONS: string;
+  SETTINGS: string;
+  SELECTCURRENCY: string;
+  BANKNAME: string;
+  IFSCCODE: string;
+  ADDBANKACCOUNT: string;
+  ADDRECIEPTENT: string;
+  YOURACCOUNT: string;
+  ADDYOURBANKACCOUNT: string;
+  ADD: string;
+  SAVING: string;
+  CURRENT: string;
+  VIEWBALANCE: string;
+  INVESTMENTS: string;
+  HEALTHSCORE: string;
+  LOGOUT: string;
+  SEARCH: string;
+  MAIN: string;
+  OTHERS: string;
+  SETTINGSDESCRIPTION: string;
+  PRIVACYANDSECURITY: string;
+  ACCOUNT: string;
+  PROFILE: string;
+  PHOTO: string;
+  PHONENUMBER: string;
+  FULLNAMEDESC: string;
+  EMAILDESC: string;
+  PHONENUMBERDESC: string;
+  LANGUAGE: string;
+  LANGUAGEDESC: string;
+  THEME: string;
+  THEMEDESC: string;
+  CHANGE: string;
+  EDIT: string;
+  PASSWORDDESC: string;
+  ADDTRANSACTION: string;
+  AMOUNT: string;
+  CATEGORY: string;
+  DESCRIPTION: string;
+  BANK: string;
+  SELECTBANK: string;
+  TRANSACTIONTYPE: string;
+  SELECT: string;
+  DEPOSIT: string;
+  WITHDRAW: string;
+  TRANSFER: string;
+  TRANSACTIONDATE: string;
+  PICKDATE: string;
+  RECIEVER: string;
+  NOBANKFOUND: string;
+  TYPEANYTHING: string;
+  SEARCHORTYPE: string;
+  TYPE: string;
+  PRESSENTERTOUSE: string;
+}
