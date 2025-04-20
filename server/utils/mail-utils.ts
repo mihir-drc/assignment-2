@@ -15,7 +15,7 @@ export async function sendMail(
     secure: true,
     auth: {
       user: "mihir.patel@drcsystems.com",
-      pass: "fiyt mcav edcq vslp",
+      pass: process.env.PASSWORD_KEY,
     },
   });
 
